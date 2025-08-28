@@ -2,6 +2,7 @@ package com.java10x.MagicFridgeAI.controller;
 
 import com.java10x.MagicFridgeAI.model.FoodItem;
 import com.java10x.MagicFridgeAI.service.FoodItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,15 +33,20 @@ public class FoodItemController {
     }
 
     @GetMapping("/listar/{id}")
-    public ResponseEntity<FoodItem> listarPorId(@PathVariable Long id){
+    public ResponseEntity<Optional<FoodItem>> listarPorId(@PathVariable Long id){
         return ResponseEntity.ok(service.listarPorId(id));
     }
 
     //UPDATE
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<FoodItem> alterar(@PathVariable Long id, @RequestBody FoodItem foodItem){
-        FoodItem comida = service.alterar(id, foodItem);
-        return ResponseEntity.ok(comida);
+    public ResponseEntity<?> alterar(@PathVariable Long id, @RequestBody FoodItem foodItem){
+        if (service.listarPorId(id).isPresent()){
+            FoodItem comida = service.alterar(id, foodItem);
+            return ResponseEntity.ok(comida);
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Comida não encontrada!");
+        }
     }
 
     //DELETE

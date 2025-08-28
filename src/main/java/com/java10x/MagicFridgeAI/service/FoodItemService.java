@@ -24,9 +24,8 @@ public class FoodItemService {
         return repository.findAll();
     }
 
-    public FoodItem listarPorId(Long id){
-        Optional<FoodItem> comida = repository.findById(id);
-        return comida.orElse(null);
+    public Optional<FoodItem> listarPorId(Long id){
+        return repository.findById(id);
     }
 
     public FoodItem alterar(Long id, FoodItem foodItem){
