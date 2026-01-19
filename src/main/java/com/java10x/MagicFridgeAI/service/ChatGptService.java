@@ -64,5 +64,6 @@ public class ChatGptService {
                     }
                     return "Nenhuma receita foi gerada.";
                 });
+
     }
 }
